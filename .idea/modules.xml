@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BluetoothRoundRobin.iml" filepath="$PROJECT_DIR$/BluetoothRoundRobin.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mediaplayerinfo/mediaplayerinfo.iml" filepath="$PROJECT_DIR$/mediaplayerinfo/mediaplayerinfo.iml" />
     </modules>
   </component>
 </project>
