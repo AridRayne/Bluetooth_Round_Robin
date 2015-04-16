@@ -1,9 +1,11 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +14,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final TextView tv = (TextView) findViewById(R.id.textList);
+        tv.setText("New Text");
+        GetMediaPlayers mediaPlayers = new GetMediaPlayers(this);
+        mediaPlayers.RefreshMediaPlayers();
+        tv.setText(mediaPlayers.get_mediaPlayers().get(1).activityInfo.applicationInfo.loadLabel(getPackageManager()));
     }
 
 
@@ -31,6 +38,8 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
