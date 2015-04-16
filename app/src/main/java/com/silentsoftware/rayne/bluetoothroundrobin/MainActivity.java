@@ -18,7 +18,12 @@ public class MainActivity extends ActionBarActivity {
         tv.setText("New Text");
         GetMediaPlayers mediaPlayers = new GetMediaPlayers(this);
         mediaPlayers.RefreshMediaPlayers();
-        tv.setText(mediaPlayers.get_mediaPlayers().get(1).activityInfo.applicationInfo.loadLabel(getPackageManager()));
+        final int listSize = mediaPlayers.get_mediaPlayers().size();
+        String mediaPlayersText = "";
+        for (int i = 0; i < listSize; i++) {
+            mediaPlayersText += mediaPlayers.get_mediaPlayers().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager()) + "\n";
+        }
+        tv.setText(mediaPlayersText);
     }
 
 
