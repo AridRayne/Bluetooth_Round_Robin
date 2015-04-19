@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,25 +13,28 @@ import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    MediaPlayerInfo mMediaPlayers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final TextView tv = (TextView) findViewById(R.id.textList);
         tv.setText("New Text");
-        MediaPlayerInfo mediaPlayers = new MediaPlayerInfo(this);
-        mediaPlayers.refreshMediaPlayers();
-        final int listSize = mediaPlayers.getMediaPlayersInfo().size();
+        mMediaPlayers = new MediaPlayerInfo(this);
+        mMediaPlayers.refreshMediaPlayers();
+        final int listSize = mMediaPlayers.getMediaPlayersInfo().size();
         String mediaPlayersText = "";
         for (int i = 0; i < listSize; i++) {
-            mediaPlayersText += mediaPlayers.getMediaPlayersInfo().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager()) + "\n";
+            mediaPlayersText += mMediaPlayers.getMediaPlayersInfo().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager()) + "\n";
         }
         tv.setText(mediaPlayersText);
         final ImageView iv = (ImageView) findViewById(R.id.imageView);
-        iv.setImageDrawable(mediaPlayers.getMediaPlayerIcon(1));
+        iv.setImageDrawable(mMediaPlayers.getMediaPlayerIcon(1));
     }
 
+    public void startPlaying(View v) {
+        mMediaPlayers.sendPlayCommand(0);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

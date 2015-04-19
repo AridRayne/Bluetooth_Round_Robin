@@ -1,10 +1,14 @@
 package com.silentsoftware.rayne.mediaplayerinfo;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
+import android.view.KeyEvent;
 
 import java.util.List;
 
@@ -37,10 +41,32 @@ public class MediaPlayerInfo {
     }
 
     public Drawable getMediaPlayerIcon(int index) {
-        try {
-            return mContext.getPackageManager().getApplicationIcon(mMediaPlayersInfo.get(index).activityInfo.packageName);
-        } catch (PackageManager.NameNotFoundException e) {
-            return null;
-        }
+        return getMediaPlayerIcon(mMediaPlayersInfo.get(index).activityInfo.packageName);
+    }
+
+    /**
+     * Implemented from <a href="https://code.google.com/p/media-button-router/">MediaButtonRouter</a>
+     *
+     * @param componentName
+     */
+    public void sendPlayCommand(ComponentName componentName) {
+        Intent mediaButtonDownIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        KeyEvent downKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY, 0);
+        mediaButtonDownIntent.putExtra(Intent.EXTRA_KEY_EVENT, downKey);
+
+        Intent mediaButtonUpIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        KeyEvent upKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY, 0);
+        mediaButtonUpIntent.putExtra(Intent.EXTRA_KEY_EVENT, upKey);
+
+        mediaButtonDownIntent.setComponent(componentName);
+        mediaButtonUpIntent.setComponent(componentName);
+
+        mContext.sendOrderedBroadcast(mediaButtonDownIntent, null, null, null, Activity.RESULT_OK, null, null);
+        mContext.sendOrderedBroadcast(mediaButtonUpIntent, null, null, null, Activity.RESULT_OK, null, null);
+    }
+
+    public void sendPlayCommand(int index) {
+        ComponentName componentName = new ComponentName(mMediaPlayersInfo.get(index).activityInfo.packageName, mMediaPlayersInfo.get(index).activityInfo.name);
+        sendPlayCommand(componentName);
     }
 }
