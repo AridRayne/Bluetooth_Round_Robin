@@ -49,13 +49,13 @@ public class MediaPlayerInfo {
      *
      * @param componentName
      */
-    public void sendPlayCommand(ComponentName componentName) {
+    public void sendMedia(ComponentName componentName, int mediaCommand) {
         Intent mediaButtonDownIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        KeyEvent downKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY, 0);
+        KeyEvent downKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, mediaCommand, 0);
         mediaButtonDownIntent.putExtra(Intent.EXTRA_KEY_EVENT, downKey);
 
         Intent mediaButtonUpIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        KeyEvent upKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY, 0);
+        KeyEvent upKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, mediaCommand, 0);
         mediaButtonUpIntent.putExtra(Intent.EXTRA_KEY_EVENT, upKey);
 
         mediaButtonDownIntent.setComponent(componentName);
@@ -65,8 +65,8 @@ public class MediaPlayerInfo {
         mContext.sendOrderedBroadcast(mediaButtonUpIntent, null, null, null, Activity.RESULT_OK, null, null);
     }
 
-    public void sendPlayCommand(int index) {
+    public void sendMediaCommand(int index, int mediaCommand) {
         ComponentName componentName = new ComponentName(mMediaPlayersInfo.get(index).activityInfo.packageName, mMediaPlayersInfo.get(index).activityInfo.name);
-        sendPlayCommand(componentName);
+        sendMedia(componentName, mediaCommand);
     }
 }
