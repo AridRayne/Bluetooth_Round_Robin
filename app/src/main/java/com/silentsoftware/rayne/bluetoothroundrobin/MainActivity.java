@@ -15,8 +15,9 @@ import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
 
 public class MainActivity extends ActionBarActivity {
-    MediaPlayerInfo mMediaPlayers;
-    Boolean mPlaying = false;
+    private MediaPlayerInfo mMediaPlayers;
+    private Boolean mPlaying = false;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +27,17 @@ public class MainActivity extends ActionBarActivity {
         tv.setText("New Text");
         mMediaPlayers = new MediaPlayerInfo(this);
         mMediaPlayers.refreshMediaPlayers();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        tv.setText(preferences.getString("media_player_list", ""));
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        tv.setText(mSharedPreferences.getString("media_player_list", ""));
     }
 
     public void startPlaying(View v) {
+        mMediaPlayers.unflattenComponentName(mSharedPreferences.getString("media_player_list", ""));
         if (!mPlaying) {
-            mMediaPlayers.sendMediaCommand(1, KeyEvent.KEYCODE_MEDIA_PLAY);
+            mMediaPlayers.sendMediaCommand(KeyEvent.KEYCODE_MEDIA_PLAY);
             mPlaying = true;
         } else {
-            mMediaPlayers.sendMediaCommand(1, KeyEvent.KEYCODE_MEDIA_PAUSE);
+            mMediaPlayers.sendMediaCommand(KeyEvent.KEYCODE_MEDIA_PAUSE);
             mPlaying = false;
         }
     }
