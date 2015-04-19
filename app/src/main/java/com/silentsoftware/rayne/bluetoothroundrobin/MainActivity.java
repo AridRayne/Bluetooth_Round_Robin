@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
@@ -19,13 +20,15 @@ public class MainActivity extends ActionBarActivity {
         final TextView tv = (TextView) findViewById(R.id.textList);
         tv.setText("New Text");
         MediaPlayerInfo mediaPlayers = new MediaPlayerInfo(this);
-        mediaPlayers.RefreshMediaPlayers();
-        final int listSize = mediaPlayers.get_media_players_info().size();
+        mediaPlayers.refreshMediaPlayers();
+        final int listSize = mediaPlayers.getMediaPlayersInfo().size();
         String mediaPlayersText = "";
         for (int i = 0; i < listSize; i++) {
-            mediaPlayersText += mediaPlayers.get_media_players_info().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager()) + "\n";
+            mediaPlayersText += mediaPlayers.getMediaPlayersInfo().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager()) + "\n";
         }
         tv.setText(mediaPlayersText);
+        final ImageView iv = (ImageView) findViewById(R.id.imageView);
+        iv.setImageDrawable(mediaPlayers.getMediaPlayerIcon(1));
     }
 
 

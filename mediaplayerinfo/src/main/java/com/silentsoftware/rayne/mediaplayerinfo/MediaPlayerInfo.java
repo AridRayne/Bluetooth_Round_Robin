@@ -2,7 +2,9 @@ package com.silentsoftware.rayne.mediaplayerinfo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 
 import java.util.List;
 
@@ -10,23 +12,35 @@ import java.util.List;
  * Created by Steven on 4/15/2015.
  */
 public class MediaPlayerInfo {
-    private Context _context;
-    private List<ResolveInfo> _media_players_info;
+    private Context mContext;
+    private List<ResolveInfo> mMediaPlayersInfo;
 
     public MediaPlayerInfo(Context context) {
-        _context = context;
+        mContext = context;
     }
 
-    public List<ResolveInfo> get_media_players_info() {
-        return _media_players_info;
+    public List<ResolveInfo> getMediaPlayersInfo() {
+        return mMediaPlayersInfo;
     }
 
-    public ResolveInfo get_media_player_info(int index) {
-        return _media_players_info.get(index);
-    }
-
-    public void RefreshMediaPlayers() {
+    public void refreshMediaPlayers() {
         Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        _media_players_info = _context.getPackageManager().queryBroadcastReceivers(intent, 0);
+        mMediaPlayersInfo = mContext.getPackageManager().queryBroadcastReceivers(intent, 0);
+    }
+
+    public Drawable getMediaPlayerIcon(String packageName) {
+        try {
+            return mContext.getPackageManager().getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            return null;
+        }
+    }
+
+    public Drawable getMediaPlayerIcon(int index) {
+        try {
+            return mContext.getPackageManager().getApplicationIcon(mMediaPlayersInfo.get(index).activityInfo.packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            return null;
+        }
     }
 }
