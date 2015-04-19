@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import java.util.List;
 public class MediaPlayerInfo {
     private Context mContext;
     private List<ResolveInfo> mMediaPlayersInfo;
+    private String mSelectedMediaPlayerPackageName;
+    private ComponentName mComponentName;
 
     public MediaPlayerInfo(Context context) {
         mContext = context;
@@ -25,6 +28,18 @@ public class MediaPlayerInfo {
 
     public List<ResolveInfo> getMediaPlayersInfo() {
         return mMediaPlayersInfo;
+    }
+
+    public String getSelectedMediaPlayerPackageName() {
+        return mSelectedMediaPlayerPackageName;
+    }
+
+    public void setSelectedMediaPlayerPackageName(String selectedMediaPlayerPackageName) {
+        this.mSelectedMediaPlayerPackageName = selectedMediaPlayerPackageName;
+    }
+
+    public void unflattenComponentName(String componentNameString) {
+        mComponentName = ComponentName.unflattenFromString(componentNameString);
     }
 
     public void refreshMediaPlayers() {
@@ -49,7 +64,7 @@ public class MediaPlayerInfo {
      *
      * @param componentName
      */
-    public void sendMedia(ComponentName componentName, int mediaCommand) {
+    public void sendMediaCommand(ComponentName componentName, int mediaCommand) {
         Intent mediaButtonDownIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         KeyEvent downKey = new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, mediaCommand, 0);
         mediaButtonDownIntent.putExtra(Intent.EXTRA_KEY_EVENT, downKey);
@@ -67,6 +82,16 @@ public class MediaPlayerInfo {
 
     public void sendMediaCommand(int index, int mediaCommand) {
         ComponentName componentName = new ComponentName(mMediaPlayersInfo.get(index).activityInfo.packageName, mMediaPlayersInfo.get(index).activityInfo.name);
-        sendMedia(componentName, mediaCommand);
+        sendMediaCommand(componentName, mediaCommand);
+        Toast.makeText(mContext, mMediaPlayersInfo.get(index).activityInfo.packageName, Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, mMediaPlayersInfo.get(index).activityInfo.name, Toast.LENGTH_LONG).show();
+    }
+
+    public void sendMediaCommand(int mediaCommand) {
+        sendMediaCommand(mComponentName, mediaCommand);
+    }
+
+    public String getFlatComponentName(int index) {
+        return new ComponentName(mMediaPlayersInfo.get(index).activityInfo.packageName, mMediaPlayersInfo.get(index).activityInfo.name).flattenToString();
     }
 }

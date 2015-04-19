@@ -1,13 +1,14 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
@@ -15,6 +16,8 @@ import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
 public class MainActivity extends ActionBarActivity {
     MediaPlayerInfo mMediaPlayers;
+    Boolean mPlaying = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,18 +26,18 @@ public class MainActivity extends ActionBarActivity {
         tv.setText("New Text");
         mMediaPlayers = new MediaPlayerInfo(this);
         mMediaPlayers.refreshMediaPlayers();
-        final int listSize = mMediaPlayers.getMediaPlayersInfo().size();
-        String mediaPlayersText = "";
-        for (int i = 0; i < listSize; i++) {
-            mediaPlayersText += mMediaPlayers.getMediaPlayersInfo().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager()) + "\n";
-        }
-        tv.setText(mediaPlayersText);
-        final ImageView iv = (ImageView) findViewById(R.id.imageView);
-        iv.setImageDrawable(mMediaPlayers.getMediaPlayerIcon(1));
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        tv.setText(preferences.getString("media_player_list", ""));
     }
 
     public void startPlaying(View v) {
-        mMediaPlayers.sendMediaCommand(0, KeyEvent.KEYCODE_MEDIA_PLAY);
+        if (!mPlaying) {
+            mMediaPlayers.sendMediaCommand(1, KeyEvent.KEYCODE_MEDIA_PLAY);
+            mPlaying = true;
+        } else {
+            mMediaPlayers.sendMediaCommand(1, KeyEvent.KEYCODE_MEDIA_PAUSE);
+            mPlaying = false;
+        }
     }
 
     @Override
