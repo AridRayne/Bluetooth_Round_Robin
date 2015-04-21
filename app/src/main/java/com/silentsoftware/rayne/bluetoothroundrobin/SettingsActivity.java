@@ -1,5 +1,8 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.media.Ringtone;
@@ -17,6 +20,9 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -176,12 +182,28 @@ public class SettingsActivity extends PreferenceActivity {
         for (int i = 0; i < listSize; i++) {
             entries[i] = mMediaPlayerInfo.getMediaPlayersInfo().get(i).activityInfo.applicationInfo.loadLabel(getPackageManager());
             entryValues[i] = mMediaPlayerInfo.getFlatComponentName(i);
-//            entryValues[i] = mMediaPlayerInfo.getMediaPlayersInfo().get(i).activityInfo.applicationInfo.packageName;
         }
         mediaPlayersListPreference.setEntries(entries);
         mediaPlayersListPreference.setEntryValues(entryValues);
         bindPreferenceSummaryToValue(mediaPlayersListPreference);
 
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter != null) {
+            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+            ArrayList<CharSequence> bluetoothEntries = new ArrayList<>();
+            ArrayList<CharSequence> bluetoothEntryValues = new ArrayList<>();
+
+            for (BluetoothDevice device : pairedDevices) {
+                if (device.getBluetoothClass().getMajorDeviceClass() == BluetoothClass.Device.Major.AUDIO_VIDEO) {
+                    bluetoothEntries.add(device.getName());
+                    bluetoothEntryValues.add(device.getAddress());
+                }
+            }
+            final ListPreference bluetoothList = (ListPreference) findPreference("host_bluetooth_device");
+            bluetoothList.setEntries(bluetoothEntries.toArray(new CharSequence[0]));
+            bluetoothList.setEntryValues(bluetoothEntryValues.toArray(new CharSequence[0]));
+            bindPreferenceSummaryToValue(bluetoothList);
+        }
 //        addPreferencesFromResource(R.xml.pref_general);
 //        fakeHeader.setTitle(R.string.pref_header_general);
 

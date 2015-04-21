@@ -4,12 +4,23 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="send_pause_checkbox"
-        android:summary="Whether or not to pause media player when a song finishes"
-        android:title="Pause on Finish" />
+        android:summary="@string/pref_summary_send_pause"
+        android:title="@string/pref_title_send_pause" />
 
     <ListPreference
         android:defaultValue="-1"
         android:key="media_player_list"
-        android:title="Media Players" />
+        android:title="@string/pref_title_media_players" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="launch_player"
+        android:summary="@string/pref_summary_launch_player"
+        android:title="@string/pref_title_launch_player" />
+
+    <ListPreference
+        android:defaultValue="-1"
+        android:key="host_bluetooth_device"
+        android:title="@string/pref_title_host_bluetooth_device" />
 
 </PreferenceScreen>

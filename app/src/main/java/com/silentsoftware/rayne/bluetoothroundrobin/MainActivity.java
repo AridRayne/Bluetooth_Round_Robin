@@ -1,5 +1,6 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
+
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -34,6 +37,23 @@ public class MainActivity extends ActionBarActivity {
     public void startPlaying(View v) {
         mMediaPlayers.unflattenComponentName(mSharedPreferences.getString("media_player_list", ""));
         if (!mPlaying) {
+            if (mSharedPreferences.getBoolean("launch_player", false)) {
+                String appPackageName = mSharedPreferences.getString("media_player_list", "");
+                appPackageName = appPackageName.substring(0, appPackageName.indexOf("/"));
+                ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+                List<ActivityManager.RunningAppProcessInfo> processInfoList = activityManager.getRunningAppProcesses();
+                activityManager.getRunningTasks(100);
+                List<ActivityManager.RunningTaskInfo> a = activityManager.getRunningTasks(100);
+                Boolean appAlreadyRunning = false;
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPackageName);
+                for (ActivityManager.RunningAppProcessInfo processInfo : processInfoList) {
+                    if (processInfo.processName.equals(appPackageName) && processInfo.importance < ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                        appAlreadyRunning = true;
+                }
+                if (!appAlreadyRunning) {
+                    startActivity(launchIntent);
+                }
+            }
             mMediaPlayers.sendMediaCommand(KeyEvent.KEYCODE_MEDIA_PLAY);
             mPlaying = true;
         } else {
