@@ -10,13 +10,16 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
     private MediaPlayerInfo mMediaPlayers;
     private Boolean mPlaying = false;
     private SharedPreferences mSharedPreferences;
@@ -25,15 +28,14 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        final TextView tv = (TextView) findViewById(R.id.textList);
-//        tv.setText("New Text");
         mMediaPlayers = new MediaPlayerInfo(this);
         mMediaPlayers.refreshMediaPlayers();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        tv.setText(mSharedPreferences.getString("media_player_list", ""));
+        ListView lv = (ListView) findViewById(R.id.listView);
+        lv.setOnItemClickListener(this);
     }
 
-    public void startPlaying(View v) {
+    public void startPlaying() {
         mMediaPlayers.unflattenComponentName(mSharedPreferences.getString("media_player_list", ""));
         if (!mPlaying) {
             if (mSharedPreferences.getBoolean("launch_player", false)) {
@@ -83,5 +85,32 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, RoundRobinService.class);
+        switch (position) {
+            case 0:
+                Toast.makeText(this, "Host", Toast.LENGTH_LONG).show();
+                intent.putExtra("mode", "host");
+                this.startService(intent);
+                break;
+            case 1:
+                Toast.makeText(this, "Client", Toast.LENGTH_LONG).show();
+                intent.putExtra("mode", "client");
+                this.startService(intent);
+                break;
+            case 2:
+                this.stopService(intent);
+                break;
+            case 3:
+                Toast.makeText(this, "DEBUG", Toast.LENGTH_LONG).show();
+                startPlaying();
+                break;
+            default:
+                Toast.makeText(this, "UNKNOWN", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 }

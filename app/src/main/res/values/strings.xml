@@ -2,4 +2,11 @@
     <string name="app_name">Bluetooth Round Robin</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="actions_array">
+        <item>Host</item>
+        <item>Client</item>
+        <item>Stop Service</item>
+        <item>Debug Test</item>
+    </string-array>
 </resources>
