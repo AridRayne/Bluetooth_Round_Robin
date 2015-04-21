@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.IBinder;
+import android.util.Log;
 
 public class RoundRobinService extends Service {
     private String mMode;
@@ -35,6 +36,18 @@ public class RoundRobinService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mMode = intent.getStringExtra("mode");
+        mWifiManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d("p2p", "Found Peers");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d("p2p", "Failed " + reason);
+            }
+
+        });
         return super.onStartCommand(intent, flags, startId);
     }
 

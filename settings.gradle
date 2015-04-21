@@ -1,1 +1,1 @@
-include ':app', ':mediaplayerinfo'
+include ':app', ':mediaplayerinfo', ':locale-api'
