@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
@@ -26,12 +25,12 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView tv = (TextView) findViewById(R.id.textList);
-        tv.setText("New Text");
+//        final TextView tv = (TextView) findViewById(R.id.textList);
+//        tv.setText("New Text");
         mMediaPlayers = new MediaPlayerInfo(this);
         mMediaPlayers.refreshMediaPlayers();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        tv.setText(mSharedPreferences.getString("media_player_list", ""));
+//        tv.setText(mSharedPreferences.getString("media_player_list", ""));
     }
 
     public void startPlaying(View v) {
@@ -47,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
                 Boolean appAlreadyRunning = false;
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPackageName);
                 for (ActivityManager.RunningAppProcessInfo processInfo : processInfoList) {
-                    if (processInfo.processName.equals(appPackageName) && processInfo.importance < ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                    if (processInfo.processName.equals(appPackageName) && processInfo.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE)
                         appAlreadyRunning = true;
                 }
                 if (!appAlreadyRunning) {
