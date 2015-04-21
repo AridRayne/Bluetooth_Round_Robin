@@ -48,7 +48,7 @@ public class RoundRobinService extends Service {
             }
 
         });
-        return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
     }
 
     @Override
