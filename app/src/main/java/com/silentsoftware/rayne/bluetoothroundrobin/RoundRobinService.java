@@ -1,17 +1,26 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.IBinder;
 
 public class RoundRobinService extends Service {
     private String mMode;
+    private WifiP2pManager mWifiManager;
+    private WifiP2pManager.Channel mChannel;
+    private BroadcastReceiver mBroadcastReceiver;
 
     public RoundRobinService() {
     }
 
     @Override
     public void onCreate() {
+        mWifiManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mWifiManager.initialize(this, getMainLooper(), null);
+        mBroadcastReceiver = new WifiDirectBroadcastReceiver(mWifiManager, mChannel, this);
         super.onCreate();
     }
 
