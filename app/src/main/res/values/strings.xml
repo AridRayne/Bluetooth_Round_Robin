@@ -9,4 +9,7 @@
         <item>Stop Service</item>
         <item>Debug Test</item>
     </string-array>
+    <string name="title_activity_tasker_edit">TaskerEditActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

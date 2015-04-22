@@ -54,8 +54,8 @@ public final class PackageUtilities {
         packages.add(Constants.LOCALE_PACKAGE);
 
         /*
-         * Note: Tasker is not 100% compatible with Locale's plug-in API, but it is close enough that these
-         * packages are enabled. Tasker's known incompatibilities are documented on the Tasker website.
+         * Note: com.silentsoftware.rayne.bluetoothroundrobin.tasker.Tasker is not 100% compatible with Locale's plug-in API, but it is close enough that these
+         * packages are enabled. com.silentsoftware.rayne.bluetoothroundrobin.tasker.Tasker's known incompatibilities are documented on the com.silentsoftware.rayne.bluetoothroundrobin.tasker.Tasker website.
          */
         packages.add("net.dinglisch.android.taskerm"); //$NON-NLS-1$
         packages.add("net.dinglisch.android.tasker"); //$NON-NLS-1$
