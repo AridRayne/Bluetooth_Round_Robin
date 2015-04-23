@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.silentsoftware.rayne.bluetoothroundrobin">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -35,18 +36,23 @@
 
         <activity
             android:name=".TaskerEditActivity"
-            android:label="@string/title_activity_tasker_edit">
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/title_activity_tasker_edit"
+            tools:ignore="ExportedActivity">
             <intent-filter>
-                <action android:name="com.twofourtyam.locale.intent.action.EDIT_SETTING" />
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
 
         <receiver
             android:name=".TaskerFireReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:process=":background"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="com.twofourtyam.locale.intent.action.FIRE_SETTING" />
+                <action android:name="com.twofortfouryam.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
     </application>
