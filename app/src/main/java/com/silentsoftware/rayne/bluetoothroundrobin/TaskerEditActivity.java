@@ -1,11 +1,10 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class TaskerEditActivity extends Activity {
+public class TaskerEditActivity extends AbstractPluginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

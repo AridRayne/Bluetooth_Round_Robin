@@ -11,5 +11,10 @@
     </string-array>
     <string name="title_activity_tasker_edit">TaskerEditActivity</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="plugin_name">Bluetooth Round Robin</string>
+    <string name="host_radio_button">Host</string>
+    <string name="client_radio_button">Client</string>
+    <string name="start_service_radio_button">Start Service</string>
+    <string name="stop_service_radio_button">Stop Service</string>
+    <string name="no_change_radio_button">Don\'t Change</string>
 </resources>
