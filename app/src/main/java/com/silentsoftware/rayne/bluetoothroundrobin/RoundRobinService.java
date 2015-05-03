@@ -1,5 +1,8 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +12,8 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.os.IBinder;
 import android.util.Log;
 
+import static android.app.Notification.FLAG_ONGOING_EVENT;
+
 public class RoundRobinService extends Service {
     private String mMode;
     private WifiP2pManager mWifiManager;
@@ -17,6 +22,7 @@ public class RoundRobinService extends Service {
     private IntentFilter mWifiDirectIntentFilter;
     private MetadataChangedReceiver mMetadataBroadcastReceiver;
     private IntentFilter mMetadataIntentFilter;
+    private NotificationManager mNotificationManager;
 
     public RoundRobinService() {
     }
@@ -48,6 +54,7 @@ public class RoundRobinService extends Service {
 
 //        mMetadataIntentFilter.addAction("com.adam.aslfms.notify.playstatechanged");
         registerReceiver(mMetadataBroadcastReceiver, mMetadataIntentFilter);
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         super.onCreate();
     }
 
@@ -67,9 +74,10 @@ public class RoundRobinService extends Service {
 
         });
 
-        if (mMode.equals("host"))
+        if (mMode.equals("host")) {
+            showNotification(true);
             mMetadataBroadcastReceiver.hostingStart();
-
+        }
         return START_REDELIVER_INTENT;
     }
 
@@ -78,6 +86,7 @@ public class RoundRobinService extends Service {
         mMetadataBroadcastReceiver.stop();
         unregisterReceiver(mWifiDirectBroadcastReceiver);
         unregisterReceiver(mMetadataBroadcastReceiver);
+        clearNotification();
         super.onDestroy();
     }
 
@@ -85,5 +94,20 @@ public class RoundRobinService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         return null;
+    }
+
+    private void showNotification(Boolean hosting) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        Notification notification = new Notification(R.mipmap.ic_launcher, "Service Running", System.currentTimeMillis());
+        notification.flags = FLAG_ONGOING_EVENT;
+        if (hosting)
+            notification.setLatestEventInfo(this, getText(R.string.app_name), "Hosting the party", pendingIntent);
+        else
+            notification.setLatestEventInfo(this, getText(R.string.app_name), "Enjoying the party", pendingIntent);
+        mNotificationManager.notify(0, notification);
+    }
+
+    private void clearNotification() {
+        mNotificationManager.cancel(0);
     }
 }
