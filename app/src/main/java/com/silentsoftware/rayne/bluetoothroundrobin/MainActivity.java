@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
@@ -60,12 +59,10 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         Intent intent = new Intent(this, RoundRobinService.class);
         switch (position) {
             case 0:
-                Toast.makeText(this, "Host", Toast.LENGTH_LONG).show();
                 intent.putExtra("mode", "host");
                 this.startService(intent);
                 break;
             case 1:
-                Toast.makeText(this, "Client", Toast.LENGTH_LONG).show();
                 intent.putExtra("mode", "client");
                 this.startService(intent);
                 break;
@@ -73,7 +70,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 this.stopService(intent);
                 break;
             default:
-                Toast.makeText(this, "UNKNOWN", Toast.LENGTH_LONG).show();
                 break;
         }
     }

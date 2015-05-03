@@ -77,6 +77,8 @@ public class RoundRobinService extends Service {
         if (mMode.equals("host")) {
             showNotification(true);
             mMetadataBroadcastReceiver.hostingStart();
+        } else {
+            showNotification(false);
         }
         return START_REDELIVER_INTENT;
     }
