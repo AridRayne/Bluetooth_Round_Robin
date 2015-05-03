@@ -52,6 +52,8 @@ public class MediaPlayerInfo {
     }
 
     public void unflattenComponentName(String componentNameString) {
+        if (componentNameString.isEmpty())
+            return;
         mComponentName = ComponentName.unflattenFromString(componentNameString);
         mSelectedMediaPlayerPackageName = componentNameString.substring(0, componentNameString.indexOf("/"));
     }
