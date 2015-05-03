@@ -3,6 +3,9 @@ package com.silentsoftware.rayne.bluetoothroundrobin;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 public class TaskerEditActivity extends AbstractPluginActivity {
 
@@ -10,6 +13,22 @@ public class TaskerEditActivity extends AbstractPluginActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasker_edit);
+        Spinner startStopSpinner = (Spinner) findViewById(R.id.spinnerStartStop);
+        final Spinner hostClientSpinner = (Spinner) findViewById(R.id.spinnerHostClient);
+        startStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0)
+                    hostClientSpinner.setVisibility(View.VISIBLE);
+                else
+                    hostClientSpinner.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 

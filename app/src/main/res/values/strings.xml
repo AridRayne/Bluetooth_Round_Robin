@@ -12,9 +12,12 @@
     <string name="title_activity_tasker_edit">TaskerEditActivity</string>
 
     <string name="plugin_name">Bluetooth Round Robin</string>
-    <string name="host_radio_button">Host</string>
-    <string name="client_radio_button">Client</string>
-    <string name="start_service_radio_button">Start Service</string>
-    <string name="stop_service_radio_button">Stop Service</string>
-    <string name="no_change_radio_button">Don\'t Change</string>
+    <string-array name="tasker_service_start_stop">
+        <item>Start Service</item>
+        <item>Stop Service</item>
+    </string-array>
+    <string-array name="tasker_service_start_service_as">
+        <item>Host</item>
+        <item>Client</item>
+    </string-array>
 </resources>

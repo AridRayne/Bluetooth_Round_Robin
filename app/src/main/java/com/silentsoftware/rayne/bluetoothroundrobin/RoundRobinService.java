@@ -13,8 +13,8 @@ public class RoundRobinService extends Service {
     private String mMode;
     private WifiP2pManager mWifiManager;
     private WifiP2pManager.Channel mChannel;
-    private BroadcastReceiver mBroadcastReceiver;
-    private IntentFilter mIntentFilter;
+    private BroadcastReceiver mWifiDirectBroadcastReceiver;
+    private IntentFilter mWifiDirectIntentFilter;
 
     public RoundRobinService() {
     }
@@ -23,13 +23,13 @@ public class RoundRobinService extends Service {
     public void onCreate() {
         mWifiManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mWifiManager.initialize(this, getMainLooper(), null);
-        mBroadcastReceiver = new WifiDirectBroadcastReceiver(mWifiManager, mChannel, this);
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-        registerReceiver(mBroadcastReceiver, mIntentFilter);
+        mWifiDirectBroadcastReceiver = new WifiDirectBroadcastReceiver(mWifiManager, mChannel, this);
+        mWifiDirectIntentFilter = new IntentFilter();
+        mWifiDirectIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        mWifiDirectIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        mWifiDirectIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        mWifiDirectIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        registerReceiver(mWifiDirectBroadcastReceiver, mWifiDirectIntentFilter);
         super.onCreate();
     }
 
@@ -53,7 +53,8 @@ public class RoundRobinService extends Service {
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(mBroadcastReceiver);
+        unregisterReceiver(mWifiDirectBroadcastReceiver);
+//        unregisterReceiver(mMetadataBroadcastReceiver);
         super.onDestroy();
     }
 

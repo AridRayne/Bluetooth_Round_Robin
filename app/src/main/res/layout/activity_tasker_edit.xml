@@ -9,64 +9,23 @@
     tools:context="com.silentsoftware.rayne.bluetoothroundrobin.TaskerEditActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <RadioGroup
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spinnerStartStop"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_horizontal">
+            android:entries="@array/tasker_service_start_stop" />
 
-            <RadioButton
-                android:id="@+id/startServiceRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/start_service_radio_button" />
-
-            <RadioButton
-                android:id="@+id/stopServiceRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/stop_service_radio_button" />
-
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_change_radio_button" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spinnerHostClient"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_horizontal">
-
-            <RadioButton
-                android:id="@+id/hostRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/host_radio_button" />
-
-            <RadioButton
-                android:id="@+id/clientRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/client_radio_button" />
-
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_change_radio_button" />
-        </RadioGroup>
-
+            android:entries="@array/tasker_service_start_service_as" />
     </LinearLayout>
-
 </RelativeLayout>
