@@ -17,4 +17,10 @@
         android:key="host_bluetooth_device"
         android:title="@string/pref_title_host_bluetooth_device" />
 
+    <EditTextPreference
+        android:defaultValue="30"
+        android:inputType="number"
+        android:key="minimum_listening_time"
+        android:title="Minimum Listening Time" />
+
 </PreferenceScreen>

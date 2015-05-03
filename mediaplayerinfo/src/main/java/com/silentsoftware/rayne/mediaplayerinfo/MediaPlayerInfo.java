@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -24,11 +25,14 @@ public class MediaPlayerInfo {
     private String mSelectedMediaPlayerPackageName;
     private ComponentName mComponentName;
     private Boolean mLaunchPlayer;
+    private int mMinimumListeningTime;
 
     public MediaPlayerInfo(Context context) {
         mContext = context;
-        unflattenComponentName(PreferenceManager.getDefaultSharedPreferences(context).getString("media_player_list", ""));
-        setLaunchPlayer(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("launch_player", false));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        unflattenComponentName(prefs.getString("media_player_list", ""));
+        setLaunchPlayer(prefs.getBoolean("launch_player", false));
+        setMinimumListeningTime(prefs.getInt("minimum_listening_time", 30));
     }
 
     public List<ResolveInfo> getMediaPlayersInfo() {
@@ -49,6 +53,14 @@ public class MediaPlayerInfo {
 
     public void setLaunchPlayer(Boolean launchPlayer) {
         mLaunchPlayer = launchPlayer;
+    }
+
+    public int getMinimumListeningTime() {
+        return mMinimumListeningTime;
+    }
+
+    public void setMinimumListeningTime(int minimumListeningTime) {
+        mMinimumListeningTime = minimumListeningTime;
     }
 
     public void unflattenComponentName(String componentNameString) {

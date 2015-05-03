@@ -3,7 +3,6 @@ package com.silentsoftware.rayne.bluetoothroundrobin;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
@@ -34,13 +33,9 @@ public class MetadataChangedReceiver extends BroadcastReceiver {
         if (time == 0)
             time = System.nanoTime();
         long timeElapsed = ((System.nanoTime() - time) / 1000000000);
-        if (timeElapsed > 30) { //TODO: Make the time limit an actual settings value.
+        if (timeElapsed > mMediaPlayerInfo.getMinimumListeningTime()) {
             time = 0;
             stop();
-        }
-        Log.d("metadata", "received " + intent.getAction() + " at: " + timeElapsed);
-        if (intent.getAction() == "player_manager_on_meta_data_changed_action") {
-            Log.d("metadata", "testing");
         }
     }
 

@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -90,6 +91,8 @@ public class SettingsActivity extends PreferenceActivity {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
+                if (preference.getKey().equals("minimum_listening_time"))
+                    preference.setSummary(stringValue + " seconds");
             }
             return true;
         }
@@ -204,6 +207,9 @@ public class SettingsActivity extends PreferenceActivity {
             bluetoothList.setEntryValues(bluetoothEntryValues.toArray(new CharSequence[0]));
             bindPreferenceSummaryToValue(bluetoothList);
         }
+
+        final EditTextPreference minimumListeningTime = (EditTextPreference) findPreference("minimum_listening_time");
+        bindPreferenceSummaryToValue(minimumListeningTime);
 //        addPreferencesFromResource(R.xml.pref_general);
 //        fakeHeader.setTitle(R.string.pref_header_general);
 
