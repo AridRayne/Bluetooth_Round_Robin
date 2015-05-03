@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.silentsoftware.rayne.bluetoothroundrobin"
-        minSdkVersion 15
-        targetSdkVersion 21
+        minSdkVersion 16
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }

@@ -33,7 +33,8 @@ public class MetadataChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Boolean isValidIntent = false;
         if (intent.getAction().equals("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationadded") ||
-                intent.getAction().equals("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationremoved")) {
+                intent.getAction().equals("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationremoved") ||
+                intent.getAction().equals("com.silentsoftware.rayne.bluetoothroundrobin.accessibility.notificationchanged")) {
             if (intent.getStringExtra("package_name").equals(mMediaPlayerInfo.getSelectedMediaPlayerPackageName())) {
                 isValidIntent = true;
             }

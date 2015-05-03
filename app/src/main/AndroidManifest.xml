@@ -46,6 +46,15 @@
             </intent-filter>
         </service>
 
+        <service android:name=".AccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".TaskerEditActivity"
             android:exported="true"

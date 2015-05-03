@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.view.accessibility.AccessibilityEvent;
 
 /**
  * Created by Steven on 5/3/2015.

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -55,6 +56,7 @@ public class RoundRobinService extends Service {
         //Bluetooth Round Robin intents
         mMetadataIntentFilter.addAction("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationadded");
         mMetadataIntentFilter.addAction("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationremoved");
+        mMetadataIntentFilter.addAction("com.silentsoftware.rayne.bluetoothroundrobin.accessibility.notificationchanged");
 
 //        mMetadataIntentFilter.addAction("com.adam.aslfms.notify.playstatechanged");
 //        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("use_notification_listener", false)) {
