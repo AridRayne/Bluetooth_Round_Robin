@@ -1,6 +1,7 @@
 package com.silentsoftware.rayne.mediaplayerinfo;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -21,9 +23,12 @@ public class MediaPlayerInfo {
     private List<ResolveInfo> mMediaPlayersInfo;
     private String mSelectedMediaPlayerPackageName;
     private ComponentName mComponentName;
+    private Boolean mLaunchPlayer;
 
     public MediaPlayerInfo(Context context) {
         mContext = context;
+        unflattenComponentName(PreferenceManager.getDefaultSharedPreferences(context).getString("media_player_list", ""));
+        setLaunchPlayer(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("launch_player", false));
     }
 
     public List<ResolveInfo> getMediaPlayersInfo() {
@@ -38,8 +43,17 @@ public class MediaPlayerInfo {
         this.mSelectedMediaPlayerPackageName = selectedMediaPlayerPackageName;
     }
 
+    public Boolean getLaunchPlayer() {
+        return mLaunchPlayer;
+    }
+
+    public void setLaunchPlayer(Boolean launchPlayer) {
+        mLaunchPlayer = launchPlayer;
+    }
+
     public void unflattenComponentName(String componentNameString) {
         mComponentName = ComponentName.unflattenFromString(componentNameString);
+        mSelectedMediaPlayerPackageName = componentNameString.substring(0, componentNameString.indexOf("/"));
     }
 
     public void refreshMediaPlayers() {
@@ -76,6 +90,21 @@ public class MediaPlayerInfo {
         mediaButtonDownIntent.setComponent(componentName);
         mediaButtonUpIntent.setComponent(componentName);
 
+        if (mLaunchPlayer && mediaCommand == KeyEvent.KEYCODE_MEDIA_PLAY) {
+            ActivityManager activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> processInfoList = activityManager.getRunningAppProcesses();
+            activityManager.getRunningTasks(100);
+            List<ActivityManager.RunningTaskInfo> a = activityManager.getRunningTasks(100);
+            Boolean appAlreadyRunning = false;
+            Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(mSelectedMediaPlayerPackageName);
+            for (ActivityManager.RunningAppProcessInfo processInfo : processInfoList) {
+                if (processInfo.processName.equals(mSelectedMediaPlayerPackageName) && processInfo.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                    appAlreadyRunning = true;
+            }
+            if (!appAlreadyRunning) {
+                mContext.startActivity(launchIntent);
+            }
+        }
         mContext.sendOrderedBroadcast(mediaButtonDownIntent, null, null, null, Activity.RESULT_OK, null, null);
         mContext.sendOrderedBroadcast(mediaButtonUpIntent, null, null, null, Activity.RESULT_OK, null, null);
     }

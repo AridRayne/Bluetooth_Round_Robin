@@ -3,8 +3,6 @@
 
     <!-- Strings related to Settings -->
 
-    <string name="pref_title_send_pause">Pause on Finish</string>
-    <string name="pref_summary_send_pause">Whether or not to pause media player when a song finishes</string>
     <string name="pref_title_media_players">Media Player</string>
     <string name="pref_title_launch_player">Launch Player</string>
     <string name="pref_summary_launch_player">Whether or not to launch the media player, useful for apps such as iHeartRadio</string>

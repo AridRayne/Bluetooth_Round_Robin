@@ -15,6 +15,8 @@ public class RoundRobinService extends Service {
     private WifiP2pManager.Channel mChannel;
     private BroadcastReceiver mWifiDirectBroadcastReceiver;
     private IntentFilter mWifiDirectIntentFilter;
+    private MetadataChangedReceiver mMetadataBroadcastReceiver;
+    private IntentFilter mMetadataIntentFilter;
 
     public RoundRobinService() {
     }
@@ -30,6 +32,22 @@ public class RoundRobinService extends Service {
         mWifiDirectIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         mWifiDirectIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
         registerReceiver(mWifiDirectBroadcastReceiver, mWifiDirectIntentFilter);
+
+        mMetadataBroadcastReceiver = new MetadataChangedReceiver(this);
+        mMetadataIntentFilter = new IntentFilter();
+
+        //Standard android broadcast intents
+        mMetadataIntentFilter.addAction("com.android.music.metachanged");
+        mMetadataIntentFilter.addAction("com.android.music.playbackcomplete");
+        mMetadataIntentFilter.addAction("com.android.music.playstatechanged");
+
+        //iHeartRadio broadcast intents
+        mMetadataIntentFilter.addAction("player_manager_on_meta_data_changed_action");
+        mMetadataIntentFilter.addAction("player_manager_on_state_changed_action");
+        mMetadataIntentFilter.addAction("player_manager_on_track_changed_action");
+
+//        mMetadataIntentFilter.addAction("com.adam.aslfms.notify.playstatechanged");
+        registerReceiver(mMetadataBroadcastReceiver, mMetadataIntentFilter);
         super.onCreate();
     }
 
@@ -48,13 +66,18 @@ public class RoundRobinService extends Service {
             }
 
         });
+
+        if (mMode.equals("host"))
+            mMetadataBroadcastReceiver.hostingStart();
+
         return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onDestroy() {
+        mMetadataBroadcastReceiver.stop();
         unregisterReceiver(mWifiDirectBroadcastReceiver);
-//        unregisterReceiver(mMetadataBroadcastReceiver);
+        unregisterReceiver(mMetadataBroadcastReceiver);
         super.onDestroy();
     }
 

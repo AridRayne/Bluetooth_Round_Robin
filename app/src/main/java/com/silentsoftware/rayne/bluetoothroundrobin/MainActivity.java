@@ -94,7 +94,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             case 0:
                 Toast.makeText(this, "Host", Toast.LENGTH_LONG).show();
                 intent.putExtra("mode", "host");
-                intent.putExtra("app", mMediaPlayers.getSelectedMediaPlayerPackageName());
                 this.startService(intent);
                 break;
             case 1:
