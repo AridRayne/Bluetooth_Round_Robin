@@ -32,7 +32,7 @@ public class MediaPlayerInfo {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         unflattenComponentName(prefs.getString("media_player_list", ""));
         setLaunchPlayer(prefs.getBoolean("launch_player", false));
-        setMinimumListeningTime(prefs.getInt("minimum_listening_time", 30));
+        setMinimumListeningTime(Integer.parseInt(prefs.getString("minimum_listening_time", "30")));
     }
 
     public List<ResolveInfo> getMediaPlayersInfo() {

@@ -3,6 +3,7 @@ package com.silentsoftware.rayne.bluetoothroundrobin;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
@@ -30,13 +31,26 @@ public class MetadataChangedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (time == 0)
-            time = System.nanoTime();
-        long timeElapsed = ((System.nanoTime() - time) / 1000000000);
-        if (timeElapsed > mMediaPlayerInfo.getMinimumListeningTime()) {
-            time = 0;
-            stop();
+        Boolean isValidIntent = false;
+        if (intent.getAction().equals("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationadded") ||
+                intent.getAction().equals("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationremoved")) {
+            if (intent.getStringExtra("package_name").equals(mMediaPlayerInfo.getSelectedMediaPlayerPackageName())) {
+                isValidIntent = true;
+            }
+        } else {
+            isValidIntent = true;
         }
+        if (isValidIntent) {
+            if (time == 0)
+                time = System.nanoTime();
+            long timeElapsed = ((System.nanoTime() - time) / 1000000000);
+            if (timeElapsed > mMediaPlayerInfo.getMinimumListeningTime()) {
+                time = 0;
+                stop();
+            }
+        }
+        if (isValidIntent)
+            Log.d("meta", "IsValid");
     }
 
     public void hostingStart() {

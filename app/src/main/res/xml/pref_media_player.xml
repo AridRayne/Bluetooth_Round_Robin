@@ -23,4 +23,9 @@
         android:key="minimum_listening_time"
         android:title="Minimum Listening Time" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="use_notification_listener"
+        android:title="Use Notification Listener" />
+
 </PreferenceScreen>

@@ -52,8 +52,14 @@ public class RoundRobinService extends Service {
         mMetadataIntentFilter.addAction("player_manager_on_state_changed_action");
         mMetadataIntentFilter.addAction("player_manager_on_track_changed_action");
 
+        //Bluetooth Round Robin intents
+        mMetadataIntentFilter.addAction("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationadded");
+        mMetadataIntentFilter.addAction("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationremoved");
+
 //        mMetadataIntentFilter.addAction("com.adam.aslfms.notify.playstatechanged");
+//        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("use_notification_listener", false)) {
         registerReceiver(mMetadataBroadcastReceiver, mMetadataIntentFilter);
+//        }
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         super.onCreate();
     }
