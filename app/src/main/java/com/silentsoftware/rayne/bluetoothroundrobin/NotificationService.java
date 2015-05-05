@@ -2,7 +2,9 @@ package com.silentsoftware.rayne.bluetoothroundrobin;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
+import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.view.accessibility.AccessibilityEvent;
@@ -12,6 +14,11 @@ import android.view.accessibility.AccessibilityEvent;
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NotificationService extends NotificationListenerService {
+    private static Boolean mIsEnabled = false;
+
+    public static Boolean isEnabled() {
+        return mIsEnabled;
+    }
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
 //        Log.d("notification", "notification added");
@@ -32,5 +39,11 @@ public class NotificationService extends NotificationListenerService {
         intent.setAction("com.silentsoftware.rayne.bluetoothroundrobin.notificationlistener.notificationremoved");
         sendBroadcast(intent);
         super.onNotificationRemoved(sbn);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        mIsEnabled = true;
+        return super.onBind(intent);
     }
 }

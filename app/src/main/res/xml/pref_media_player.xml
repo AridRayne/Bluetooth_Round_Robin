@@ -26,6 +26,7 @@
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="use_notification_listener"
-        android:title="Use Notification Listener" />
+        android:title="@string/pref_title_use_notification_listener"
+        android:summary="@string/pref_summary_use_notification_listener"/>
 
 </PreferenceScreen>

@@ -1,15 +1,16 @@
 package com.silentsoftware.rayne.bluetoothroundrobin;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -17,10 +18,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.provider.Settings;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.silentsoftware.rayne.mediaplayerinfo.MediaPlayerInfo;
 
@@ -67,29 +65,9 @@ public class SettingsActivity extends PreferenceActivity {
                                 ? listPreference.getEntries()[index]
                                 : null);
 
-            } else if (preference instanceof RingtonePreference) {
-                // For ringtone preferences, look up the correct display value
-                // using RingtoneManager.
-                if (TextUtils.isEmpty(stringValue)) {
-                    // Empty values correspond to 'silent' (no ringtone).
-                    preference.setSummary(R.string.pref_ringtone_silent);
-
-                } else {
-                    Ringtone ringtone = RingtoneManager.getRingtone(
-                            preference.getContext(), Uri.parse(stringValue));
-
-                    if (ringtone == null) {
-                        // Clear the summary if there was a lookup error.
-                        preference.setSummary(null);
-                    } else {
-                        // Set the summary to reflect the new ringtone display
-                        // name.
-                        String name = ringtone.getTitle(preference.getContext());
-                        preference.setSummary(name);
-                    }
-                }
-
-            } else {
+            }
+            else
+            {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
@@ -202,6 +180,43 @@ public class SettingsActivity extends PreferenceActivity {
 
         final EditTextPreference minimumListeningTime = (EditTextPreference) findPreference("minimum_listening_time");
         bindPreferenceSummaryToValue(minimumListeningTime);
+        final CheckBoxPreference accessCheckbox = (CheckBoxPreference) findPreference("use_notification_listener");
+        final Context mContext = this;
+        accessCheckbox.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (!(Boolean) newValue)
+                    return true;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    if (NotificationService.isEnabled())
+                        return true;
+                }
+                else {
+                    if (AccessibilityService.isEnabled())
+                        return true;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle(getString(R.string.read_notification_alert_dialog_title))
+                        .setMessage(getString(R.string.read_notification_alert_dialog_message))
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                    intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+                                }
+                                else {
+                                    intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                                }
+                                startActivityForResult(intent, 0);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create().show();
+                return true;
+            }
+        });
     }
 
     /**

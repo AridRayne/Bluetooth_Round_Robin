@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="read_notification_alert_dialog_title">Notification Listener Service</string>
+    <string name="read_notification_alert_dialog_message">Please enable the notification listener service for Bluetooth Round Robin.</string>
+
+</resources>

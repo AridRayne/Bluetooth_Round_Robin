@@ -20,4 +20,7 @@
         <item>Host</item>
         <item>Client</item>
     </string-array>
+
+    <string name="read_notification_alert_dialog_title">Accessibility Service</string>
+    <string name="read_notification_alert_dialog_message">Please enable the accessibility service for Bluetooth Round Robin.</string>
 </resources>

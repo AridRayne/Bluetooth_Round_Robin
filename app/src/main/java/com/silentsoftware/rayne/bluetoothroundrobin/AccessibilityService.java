@@ -12,6 +12,17 @@ import android.view.accessibility.AccessibilityEvent;
  */
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
     private AccessibilityServiceInfo mAccessibilityServiceInfo;
+    private static Boolean mIsEnabled = false;
+
+    @Override
+    public void onDestroy() {
+        mIsEnabled = false;
+        super.onDestroy();
+    }
+
+    public static Boolean isEnabled() {
+        return mIsEnabled;
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -41,6 +52,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         mAccessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_ALL_MASK;
         mAccessibilityServiceInfo.notificationTimeout = 100;
         this.setServiceInfo(mAccessibilityServiceInfo);
+        mIsEnabled = true;
         super.onServiceConnected();
     }
 }

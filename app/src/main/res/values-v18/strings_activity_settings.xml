@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pref_title_use_notification_listener">Use Notification Listener Service</string>
+    <string name="pref_summary_use_notification_listener">Whether or not to use the notification listener service to check notifications for track updates.</string>
+
+</resources>
